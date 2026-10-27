@@ -1,1 +1,65 @@
 
+body {
+    margin: 0;
+    font-family: Calibri, sans-serif;
+    background-color: #f5f6f8;
+    color: #222;
+}
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background-color: #1a0c53;
+    color: white;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.menu {
+    display: flex;
+    gap: 24px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    color: #a5e5b5;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+h1, h2 {
+    color: #1a0c53;
+}
+
+/* Stopka */
+
+footer {
+    background-color: #1a0c53;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+footer h2 {
+    color: white;
+}
+

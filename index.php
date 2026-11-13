@@ -7,7 +7,7 @@ $cennik = [
     ['nazwa' => 'Regulacja hamulców', 'cena' => 40],
     ['nazwa' => 'Regulacja przerzutek', 'cena' => 40],
     ['nazwa' => 'Wymiana opony lub dętki', 'cena' => 30],
-    ['nazwa' => 'Centrowanie koła', 'cena' => 70]
+    ['nazwa' => 'Centrowanie koła', 'cena' => 70],
     ['nazwa' => 'Smarowanie łańcucha', 'cena' => 20]
 ];
 ?>

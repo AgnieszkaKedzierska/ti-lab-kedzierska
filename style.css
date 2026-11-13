@@ -16,9 +16,22 @@ body {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 28px;
     font-weight: bold;
     margin: 0;
+    color: white;
+    text-decoration: none;
+}
+
+.logo svg {
+    flex-shrink: 0;
+}
+
+.logo:hover {
+    color: #a5dae5;
 }
 
 .menu {

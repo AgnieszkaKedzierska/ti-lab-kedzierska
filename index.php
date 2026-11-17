@@ -1,15 +1,14 @@
 <?php
+
+require 'baza.php';
+
 $firma = 'Szprycha';
 $rok = date('Y');
 
-$cennik = [
-    ['nazwa' => 'Przegląd roweru', 'cena' => 120],
-    ['nazwa' => 'Regulacja hamulców', 'cena' => 40],
-    ['nazwa' => 'Regulacja przerzutek', 'cena' => 40],
-    ['nazwa' => 'Wymiana opony lub dętki', 'cena' => 30],
-    ['nazwa' => 'Centrowanie koła', 'cena' => 70],
-    ['nazwa' => 'Smarowanie łańcucha', 'cena' => 20]
-];
+$cennik = $pdo->query(
+    'SELECT nazwa, cena FROM uslugi ORDER BY cena'
+)->fetchAll();
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">

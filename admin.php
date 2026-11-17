@@ -1,3 +1,4 @@
+
 <?php
 
 require 'auth.php';
@@ -17,9 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $z->execute(['nazwa' => $nazwa, 'cena' => $cena]);
 
-            header('Location: admin.php?ok=dodano');
-            exit;
+           $_SESSION['komunikat'] = 'Usługa dodana.';
+            header('Location: admin.php');
+            exit;       
         }
+    }
+
+    if ($akcja === 'usun') {
+        $z = $pdo->prepare('DELETE FROM uslugi WHERE id = :id');
+        $z->execute(['id' => (int) $_POST['id']]);
+
+        $_SESSION['komunikat'] = 'Usługa usunięta.';
+        header('Location: admin.php');
+        exit;
     }
 }
 
@@ -33,56 +44,84 @@ $uslugi = $pdo->query(
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Panel administratora</title>
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
 </head>
 <body>
 
-    <h1>Panel administratora</h1>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <span class="navbar-brand">Szprycha – panel administratora</span>
+            <a href="wyloguj.php" class="btn btn-outline-light">Wyloguj</a>
+        </div>
+    </nav>
 
-    <p>Witaj, <?= htmlspecialchars($_SESSION['uzytkownik']) ?></p>
+    <main class="container py-4">
 
+        <h1>Witaj, <?= htmlspecialchars($_SESSION['uzytkownik']) ?></h1>
 
-    <?php if (($_GET['ok'] ?? '') === 'dodano'): ?>
-        <p>Dodano usługę.</p>
-    <?php endif; ?>
+        <?php if (isset($_SESSION['komunikat'])): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($_SESSION['komunikat']) ?>
+            </div>
+            <?php unset($_SESSION['komunikat']); ?>
+        <?php endif; ?>
 
-    <h2>Lista usług</h2>
+        <div class="row">
 
-    <table>
-        <thead>
+            <div class="col-lg-8">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usługa</th>
+            <th>Cena</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($uslugi as $usluga): ?>
             <tr>
-                <th>ID</th>
-                <th>Nazwa</th>
-                <th>Cena (zł)</th>
+                <td><?= htmlspecialchars($usluga['nazwa']) ?></td>
+                <td><?= $usluga['cena'] ?> zł</td>
+                <td>
+                    <form method="post" class="d-inline">
+                        <input type="hidden" name="akcja" value="usun">
+                        <input type="hidden" name="id" value="<?= (int) $usluga['id'] ?>">
+                        <button class="btn btn-sm btn-outline-danger">Usuń</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($uslugi as $usluga): ?>
-                <tr>
-                    <td><?= $usluga['id'] ?></td>
-                    <td><?= htmlspecialchars($usluga['nazwa']) ?></td>
-                    <td><?= $usluga['cena'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+            </div>
 
-    <h2>Dodaj usługę</h2>
+            <div class="col-lg-4">
+            
+                <form method="post">
+                    <input type="hidden" name="akcja" value="dodaj">
 
-    <form method="post">
-        <input type="hidden" name="akcja" value="dodaj">
+                    <div class="mb-3">
+                        <label for="nazwa" class="form-label">Nazwa usługi</label>
+                        <input id="nazwa" name="nazwa" class="form-control" required maxlength="100">
+                    </div>
 
-        <label for="nazwa">Nazwa</label>
-        <input id="nazwa" name="nazwa" required maxlength="100">
+                    <div class="mb-3">
+                        <label for="cena" class="form-label">Cena (zł)</label>
+                        <input id="cena" name="cena" type="number" min="1" class="form-control" required>
+                    </div>
 
-        <label for="cena">Cena (zł)</label>
-        <input id="cena" name="cena" type="number" min="1" required>
+                    <button class="btn btn-primary">Dodaj</button>
+                </form>
+            </div>
 
-        <button>Dodaj</button>
-    </form>
-
-<br>
- <a href="wyloguj.php">Wyloguj</a>
+        </div>
+    </main>
 
 </body>
 </html>
